@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "graph.h"
-/***njjkjjjjjdgdgdhg   eteeyeyeyeyeyj*/
+
 int main()
 {
     exist a;
