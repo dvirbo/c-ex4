@@ -15,7 +15,7 @@ pnode newNode(int data, pnode prev)
 pnode creatList(int nodeSum)
 {
     node head = malloc(sizeof(node)); // set the head
-    pnode prev = &head;                     // pointer that keep the prev address
+    pnode prev = &head;               // pointer that keep the prev address
     for (int data = 1; data < nodeSum; data++)
     {
         prev = newNode(data, prev);
@@ -92,7 +92,7 @@ pnode build_graph_cmd(int nodeSum)
 // A 4 n 0 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2 n 3 T 3 2 1 3 S 2 0
 // . . .
 
-void del_edges(pedge first) // delete all the edges that Coming out from the curr node
+void del_edges(pedge first) // delete *all* the edges that Coming out from the curr node
 {
     pedge temp = first;
     while (temp != NULL)
@@ -135,28 +135,81 @@ pnode insert_node_cmd(pnode head)
         node p = malloc(sizeof(node));
         p.node_num = id;
         p.next = head;
-         while (scanf("%d", &dis)) // how can i stop scan 
+        while (scanf("%d", &dis)) // how can i stop scan
+        {
+            pnode to = serach(dis, tmpHead);
+            tmpHead = head; // reaset the tmpHead
+            scanf("%d", &w);
+            curEdeg = creatEdge(to, w);
+            if (firstEdge)
             {
-                pnode to = serach(dis, tmpHead);
-                tmpHead = head; // reaset the tmpHead
-                scanf("%d", &w);
-                curEdeg = creatEdge(to, w);
-                if (firstEdge)
-                {
-                    from->edges = curEdeg; // the src node point to the first edge that we create
-                    firstEdge = 0;
-                    prev = curEdeg;
-                }
-                else
-                {
-                    prev->next = curEdeg; // the edge that came before will point to the curr edge (i.e edge)
-                    curEdeg->next = NULL;
-                    prev = curEdeg;
-                }
+                p->edges = curEdeg; // the src node point to the first edge that we create
+                firstEdge = 0;
+                prev = curEdeg;
             }
+            else
+            {
+                prev->next = curEdeg; // the edge that came before will point to the curr edge (i.e edge)
+                curEdeg->next = NULL;
+                prev = curEdeg;
+            }
+        }
 
         head = &p;
-
     }
     return head;
+}
+
+// this func get pointer to head(the head himself is a pointer so it's pointer to pointer..)
+// and delete the node (and all the out edges) by the given id
+void delete_node_cmd(pnode *head)
+{
+    int id;
+    scanf("%d", &id);
+    pnode curr = head;
+    pnode prev = head;
+    pnode temp = head;
+    if (curr->node_num == id)
+    {
+        head = curr->next;
+        free(curr);
+        curr = NULL;
+    }
+    else // if the pos isn't the first node:
+    {
+        while (curr->node_num != id)
+        {
+            prev = curr;
+            curr = curr->next;
+        }
+        prev->next = curr->next;
+        del_in_out_edges(temp, id);
+        free(curr);
+        curr = NULL;
+    }
+}
+// func that del all the edges that connected to the current node
+
+void del_in_out_edges(pnode head, int id)
+{
+    while (head != NULL)
+    {
+        pedge curr = head->edges;
+        pedge prev = head->edges;
+
+        if (head->node_num == id)
+        {
+            del_edges(head->edges); // del all the out edges
+        }
+        while (curr->endpoint != id)
+        {
+            prev = curr;
+            curr = curr->endpoint;
+        }
+        prev->next = curr->next;
+        free(curr);
+        curr = NULL;
+
+        head = head->next;
+    }
 }

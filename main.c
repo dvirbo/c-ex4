@@ -37,7 +37,7 @@ int main()
         break;
 
     case 'D':
-        delete_node_cmd();
+        delete_node_cmd(&a.start);
         break;
 
     case 'S':
