@@ -5,7 +5,7 @@ typedef struct _edge
 {
     int src;
     int dest;
-    float weight;
+    int weight;
     struct _edge *next;
 }edge;
 
@@ -20,6 +20,6 @@ void Node_free(vertex* node);
 
 vertex * add_node(int data, vertex *next);
 
-void first_edge(vertex * v, int src, int dest, float w);
+void first_edge(vertex * v, int src, int dest, int w);
 
-void add_edge(int src, int dest, float w, vertex * v);
+void add_edge(int src, int dest, int w, vertex * v);

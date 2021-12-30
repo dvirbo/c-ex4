@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "vertex.h"
 
-edge * edge_alloc(int src,int dest,float w, edge* next) {
+edge * edge_alloc(int src,int dest,int w, edge* next) {
     edge* edge1= (edge *)malloc(sizeof(edge));
     edge1->src= src;
     edge1->dest = dest;
@@ -39,11 +39,11 @@ vertex * add_node(int data, vertex *next) {
     return p;
 }
 
-void first_edge(vertex * v, int src, int dest, float w) {
+void first_edge(vertex * v, int src, int dest, int w) {
     v->edges = edge_alloc(src,dest,w,NULL);
 }
 
-void add_edge(int src, int dest, float w, vertex * v) {
+void add_edge(int src, int dest, int w, vertex * v) {
     edge **p = &v->edges;
     while(*p){
         p = &((*p)->next);

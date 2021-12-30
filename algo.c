@@ -5,7 +5,7 @@
 Graph *graph;
 int bool = 0;
 
-void A(){
+void build_graph_cmd(){
     if(bool == 1){
         Graph_free(graph);
     }
@@ -30,7 +30,7 @@ void A(){
         }
 
         int dest;
-        float weight;
+        int weight;
         int first = -1;
 
         while(scanf("%d",&dest)){
@@ -44,4 +44,21 @@ void A(){
         }
     }
     bool = 1;
+}
+
+void insert_node_cmd(){
+
+}
+
+void delete_node_cmd(){
+    vertex **head = &graph->_head;
+    int id;
+    scanf("%d", &id);
+    vertex **curr  = head;
+    vertex **prev  = head;
+    if(((*curr)->id) == id)
+    {
+        *head = (*curr).
+    }
+
 }
