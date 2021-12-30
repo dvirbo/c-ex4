@@ -28,7 +28,7 @@ void first_edge(vertex * v, int src, int dest, float w) {
 }
 
 void add_edge(int src, int dest, float w, vertex * v) {
-    struct _edge **p = &v->edges;
+    edge **p = &v->edges;
     while(*p){
         p = &((*p)->next);
     }
