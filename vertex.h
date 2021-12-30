@@ -7,19 +7,17 @@ typedef struct _edge
     int dest;
     int weight;
     struct _edge *next;
-}edge;
+}edge, *pedge;
 
 typedef struct _vertex{
     int id;
     int tag;
-    edge * edges;
+    pedge edges;
     struct _vertex *next;
-}vertex;
+}vertex, *pvertex;
 
-void Node_free(vertex* node);
-
-vertex * add_node(int data, vertex *next);
-
-void first_edge(vertex * v, int src, int dest, int w);
-
-void add_edge(int src, int dest, int w, vertex * v);
+void Node_free(pvertex node);
+pvertex add_node(int data, pvertex next);
+void first_edge(pvertex v, int src, int dest, int w);
+void add_edge(int src, int dest, int w, pvertex v);
+pvertex get_node(int id,pvertex head, int number_of_nodes);
