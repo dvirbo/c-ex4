@@ -20,13 +20,13 @@ int main()
             delete_node_cmd();
             break;
 
-        case 'S':
-            shortsPath_cmd();
-            break;
-
-        case 'T':
-            TSP_cmd();
-            break;
+//        case 'S':
+//            shortsPath_cmd();
+//            break;
+//
+//        case 'T':
+//            TSP_cmd();
+//            break;
     }
 
     return 0;

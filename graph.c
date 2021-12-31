@@ -10,8 +10,8 @@ Graph* Graph_alloc() {
 
 void Graph_free(Graph* list) {
     if (list==NULL) return;
-    vertex * p1= list->_head;
-    vertex * p2;
+    pvertex p1= list->_head;
+    pvertex p2;
     while(p1) {
         p2= p1;
         p1= p1->next;
@@ -32,16 +32,18 @@ double Graph_firstData(const Graph* list) {
     return list->_head->id;
 }
 
-void Graph_insertFirst(Graph* list, int data,int tag) {
+void Graph_insertFirst(Graph* list, int data) {
     list->_head= add_node(data, list->_head);
     ++(list->_size);
 }
 
-void insertLast(int data, Graph* list) {
-    vertex **p= &list->_head;
-    while(*p){
-        p = &((*p)->next);
+void insertLast(Graph* list,int data) {
+    pvertex head= list->_head;
+    pvertex ptr ,temp;
+    ptr = head;
+    temp = add_node(data, NULL);
+    while (ptr->next != NULL){
+        ptr = ptr->next;
     }
-    *p = add_node(data,NULL);
-    ++(list->_size);
+    ptr->next = temp;
 }

@@ -16,8 +16,8 @@ void free_edge(pedge e){
 
 void Node_free(pvertex node) {
     if (node==NULL) return;
-    edge * p1= node->edges;
-    edge * p2;
+    pedge p1= node->edges;
+    pedge p2;
     while(p1) {
         p2= p1;
         p1= p1->next;
@@ -30,7 +30,7 @@ void Node_free(pvertex node) {
     p2 = NULL;
 }
 
-pvertex  add_node(int data, pvertex next) {
+pvertex add_node(int data, pvertex next) {
     pvertex p = (pvertex) malloc(sizeof(vertex));
     p->id = data;
     p->tag = 0;
@@ -44,7 +44,7 @@ void first_edge(pvertex v, int src, int dest, int w) {
 }
 
 void add_edge(int src, int dest, int w, pvertex v) {
-    struct _edge **p = &v->edges;
+    pedge *p = &v->edges;
     while(*p){
         p = &((*p)->next);
     }
@@ -52,7 +52,7 @@ void add_edge(int src, int dest, int w, pvertex v) {
 }
 
 pvertex get_node(int id, pvertex head, int number_of_nodes){
-    vertex **p = &head;
+    pvertex *p = &head;
     while(((*p)->id) != id){
         p = &((*p)->next);
     }
