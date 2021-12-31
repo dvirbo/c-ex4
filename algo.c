@@ -80,21 +80,20 @@ void delete_node_cmd() {
     pvertex curr = *head;
     pvertex prev = *head;
     if (curr->id == id) {
-        del_in_edges((pvertex *) head, id);
         head = &(curr->next);
+        del_in_edges((pvertex) head, id);
         Node_free(curr);
         curr = NULL;
     } else
-        while (curr->id != id && curr->next != NULL) {
+        while (curr->id != id) {
         prev = curr;
         curr = curr->next;
     }
-        if(curr->id == id){
-            *(prev)->next = *(curr)->next;
-            del_in_edges((pvertex *) head, id);
+            prev->next = curr->next;
+            del_in_edges( (pvertex) head, id);
             Node_free(curr);
             curr = NULL;
-        }
+
 }
 
 int shortsPath_cmd() {
