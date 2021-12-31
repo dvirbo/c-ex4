@@ -1,8 +1,13 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "vertex.h"
 
 pedge edge_alloc(int src,int dest,int w, pedge next) {
     pedge edge1= (pedge)malloc(sizeof(edge));
+    if(edge1 == NULL){
+        printf("Memory not available");
+        exit(1);
+    }
     edge1->src= src;
     edge1->dest = dest;
     edge1->weight = w;
@@ -16,8 +21,8 @@ void free_edge(pedge e){
 
 void Node_free(pvertex node) {
     if (node==NULL) return;
-    pedge p1= node->edges;
-    pedge p2;
+    edge * p1= node->edges;
+    edge * p2;
     while(p1) {
         p2= p1;
         p1= p1->next;
@@ -32,6 +37,10 @@ void Node_free(pvertex node) {
 
 pvertex add_node(int data, pvertex next) {
     pvertex p = (pvertex) malloc(sizeof(vertex));
+    if(p== NULL){
+        printf("Memory not available");
+        exit(1);
+    }
     p->id = data;
     p->tag = 0;
     p->edges = NULL;
@@ -44,7 +53,7 @@ void first_edge(pvertex v, int src, int dest, int w) {
 }
 
 void add_edge(int src, int dest, int w, pvertex v) {
-    pedge *p = &v->edges;
+    edge **p = &v->edges;
     while(*p){
         p = &((*p)->next);
     }
@@ -52,7 +61,7 @@ void add_edge(int src, int dest, int w, pvertex v) {
 }
 
 pvertex get_node(int id, pvertex head, int number_of_nodes){
-    pvertex *p = &head;
+    vertex **p = &head;
     while(((*p)->id) != id){
         p = &((*p)->next);
     }
@@ -62,20 +71,25 @@ pvertex get_node(int id, pvertex head, int number_of_nodes){
     return *p;
 }
 
-void  del_in_edges(pvertex head, int id){
+void del_in_edges(pvertex head, int id){
     while (head != NULL){
+        pedge ed_head = head->edges;
         pedge curr = head->edges;
-        pedge prev = head->edges;
-        while(curr->dest != id){
-            prev = curr;
-            curr = curr->next;
+        pedge prev = NULL;
+        while (curr != NULL){
+            if(curr->dest == id){
+                if(curr == ed_head){
+                    head->edges = head->edges->next;
+                }
+                prev = curr->next;
+                free_edge(curr);
+                curr = prev;
+            }
+            else{
+                curr = curr->next;
+            }
         }
-        prev->next = curr->next;
-        free_edge(curr);
-        curr = NULL;
         head = head->next;
     }
-
 }
-
 

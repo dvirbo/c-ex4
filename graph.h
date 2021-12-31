@@ -10,6 +10,6 @@ typedef struct _Graph {
 Graph* Graph_alloc();
 void Graph_free(Graph* list);
 int Graph_size(const Graph* list);
-void Graph_insertFirst(Graph* list, int data);
 double Graph_firstData(const Graph* list);
-void insertLast(Graph* list,int data);
+void Graph_insertFirst(Graph* list, int data);
+void insertLast(int data, Graph* list);

@@ -15,11 +15,10 @@ int main()
         case 'B':
             insert_node_cmd();
             break;
-
         case 'D':
             delete_node_cmd();
             break;
-
+//
 //        case 'S':
 //            shortsPath_cmd();
 //            break;
@@ -27,6 +26,8 @@ int main()
 //        case 'T':
 //            TSP_cmd();
 //            break;
+        default:
+            printf("Error! operator is not correct");
     }
 
     return 0;
