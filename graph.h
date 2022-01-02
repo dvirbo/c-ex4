@@ -1,6 +1,6 @@
 #ifndef GRAPH_
 #define GRAPH_
-
+#define inf 1000000
 typedef struct GRAPH_NODE_ *pnode;;
 
 typedef struct edge_
@@ -17,18 +17,12 @@ typedef struct GRAPH_NODE_
     struct GRAPH_NODE_ *next;
 } node, *pnode;
 
-typedef struct exist_
-{
-    int bool;
-    struct GRAPH_NODE_ *start;
-}exist, *pexist;
 
 
-pnode build_graph_cmd(int nodeSum);
-pnode del_graph(pnode head);
-pnode insert_node_cmd(pnode head);
+void build_graph_cmd(pnode *head);
+void insert_node_cmd(pnode *head);
 void delete_node_cmd(pnode *head);
-//void printGraph_cmd(pnode head); // for self debug
+void printGraph_cmd(pnode head); //for self debug
 void deleteGraph_cmd(pnode *head);
 void shortsPath_cmd(pnode head);
 void TSP_cmd(pnode head);

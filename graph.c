@@ -2,214 +2,121 @@
 #include <stdlib.h>
 #include "graph.h"
 
-pnode newNode(int data, pnode prev)
-{
-    node p = malloc(sizeof(node));
-    p.node_num = data;
-    p.next = NULL;
-    prev->next = p;
-    pnode pp = &p;
-    return pp;
+
+
+void build_graph_cmd(pnode *head) {
+    deleteGraph_cmd(head);
+    int node_amount = 0;
+    scanf("%d",&node_amount);
+    char newNode;
+    scanf("%c", &newNode);
+    int count = 0;
+    while (count < node_amount)
+    {
+        scanf("%c", &newNode); // in the first node it doesn't work..(will be 0)
+        insert_node_cmd(head);
+        count++;
+    }
 }
 
-pnode creatList(int nodeSum)
+pnode getNode(pnode *head, int id)
 {
-    node head = malloc(sizeof(node)); // set the head
-    pnode prev = &head;               // pointer that keep the prev address
-    for (int data = 1; data < nodeSum; data++)
+    pnode nodeId = *head;
+    while (nodeId != NULL)
     {
-        prev = newNode(data, prev);
-    }
-    prev = &head;
-    return prev;
-}
-
-pnode serach(int data, pnode head)
-{
-    if (head == NULL)
-    {
-        return;
-    }
-    while (head != NULL)
-    {
-        if (head->node_num == data)
+        if (nodeId->node_num == id)
         {
-            return &head;
+            return nodeId;
         }
-        head->next = head->next->next;
+        nodeId = nodeId->next;
     }
     return NULL;
 }
 
-pedge creatEdge(pnode to, int w)
-{
-    edge p = malloc(sizeof(edge));
-    p.endpoint = &to;
-    p.weight = w;
-    pedge pp = &p;
-    return pp;
-}
+void insert_node_cmd(pnode *head){
+    int id = -1;
+    int dest = -1;
+    int weight = -1;
 
-pnode build_graph_cmd(int nodeSum)
-{
-    pnode head = creatList(nodeSum); // create list of all the nodes pointers
-    pnode tmpHead = head;            // build cause we don't what to change the val of the head pointer,use when you send the head ptr to other punc
-    int dis = 0, w = 0, src = 0, count = 0;
+    scanf("%id", &id);
+    pnode src = getNode(head, id);
+    if(src == NULL){ // the first node
+        src = (pnode)malloc(sizeof(node));
+        if(src == NULL){ //check if the malloc works
+        return;
+    }
+        src->node_num = id;
+        src->next = *head;
+        src->edges = NULL;
+        *head = src;
+} else{
+    pedge e = src->edges;
+        while (e != NULL){ // iterate until the last edge in edges
+            pedge tmp = e->next;
+            free(e);
+            e = tmp;
+        }
+       src->edges = NULL;
+    }
+    int check = scanf("%d", &dest);
+    while (check != 0 && check != EOF){
 
-    while (count != nodeSum) // while we didnt pass all the nodes
-    {
-        if (scanf("%d", &src))
-        {
-            pnode from = serach(src, tmpHead); // return the address of the src node
-            tmpHead = head;                    // reaset the tmpHead
-            int firstEdge = 1;                 // indicate that its tne first edge that create
-            pedge curEdeg = NULL;
-            pedge prev = NULL; // pointer to the previos edge that connected to the *same* node
-            while (scanf("%d", &dis))
-            {
-                pnode to = serach(dis, tmpHead);
-                tmpHead = head; // reaset the tmpHead
-                scanf("%d", &w);
-                curEdeg = creatEdge(to, w);
-                if (firstEdge)
-                {
-                    from->edges = curEdeg; // the src node point to the first edge that we create
-                    firstEdge = 0;
-                    prev = curEdeg;
-                }
-                else
-                {
-                    prev->next = curEdeg; // the edge that came before will point to the curr edge (i.e edge)
-                    curEdeg->next = NULL;
-                    prev = curEdeg;
-                }
+        pnode destN = getNode(head, dest); //check if exist
+        if(destN == NULL){ // if the est node isn't exist:
+            destN = (pnode)malloc(sizeof (node));
+            if(destN == NULL){
+                return;
             }
+            destN->node_num = dest;
+            destN->edges = NULL;
+            destN->next = *head;
+            *head = destN;
         }
-        count++;
-    }
-    return head;
-}
-// A 4 n 0 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2 n 3 T 3 2 1 3 S 2 0
-// . . .
-
-void del_edges(pedge first) // delete *all* the edges that Coming out from the curr node
-{
-    pedge temp = first;
-    while (temp != NULL)
-    {
-        temp = first->next;
-        free(first);
-        first = temp;
-    }
-}
-
-pnode del_graph(pnode head)
-{
-    pnode temp = head;
-    while (temp != NULL)
-    {
-        temp = head->next;
-        del_edges(head->edges);
-        free(head);
-        head = temp;
-    }
-
-    return head;
-}
-/// B 5 0 4 2 1
-/// * *
-pnode insert_node_cmd(pnode head)
-{
-    int id;
-    pnode tmpHead = head;
-    pnode ans = NULL;
-    scanf(" %d", &id); // scan the node id
-    ans = serach(id, tmpHead);
-    tmpHead = head;
-    if (ans != NULL) // there is node with the same id:
-    {
-        del_edges(ans);
-    }
-    else
-    {
-        node p = malloc(sizeof(node));
-        p.node_num = id;
-        p.next = head;
-        while (scanf("%d", &dis)) // how can i stop scan
-        {
-            pnode to = serach(dis, tmpHead);
-            tmpHead = head; // reaset the tmpHead
-            scanf("%d", &w);
-            curEdeg = creatEdge(to, w);
-            if (firstEdge)
-            {
-                p->edges = curEdeg; // the src node point to the first edge that we create
-                firstEdge = 0;
-                prev = curEdeg;
-            }
-            else
-            {
-                prev->next = curEdeg; // the edge that came before will point to the curr edge (i.e edge)
-                curEdeg->next = NULL;
-                prev = curEdeg;
-            }
+        pedge *edg = &(src->edges);
+        scanf("%d", weight);
+        *edg = (pedge)malloc(sizeof (edge));
+        if((*edg) == NULL){ //check if the malloc works
+            return;
         }
+        (*edg)->weight = weight;
+        (*edg)->endpoint = destN;
+        (*edg)->next = NULL;
+        edg = &((*edg)->next); //to the next addr
+        check = scanf("%d", &dest);
 
-        head = &p;
     }
-    return head;
 }
 
-// this func get pointer to head(the head himself is a pointer so it's pointer to pointer..)
-// and delete the node (and all the out edges) by the given id
-void delete_node_cmd(pnode *head)
-{
-    int id;
-    scanf("%d", &id);
-    pnode curr = head;
-    pnode prev = head;
-    pnode temp = head;
-    if (curr->node_num == id)
-    {
-        head = curr->next;
-        free(curr);
-        curr = NULL;
-    }
-    else // if the pos isn't the first node:
-    {
-        while (curr->node_num != id)
-        {
-            prev = curr;
-            curr = curr->next;
+void deleteGraph_cmd(pnode *head){
+    pnode nodeId = *head;
+    while (nodeId != NULL){
+        pedge edgeId = nodeId->edges;
+        while (edgeId != NULL){
+            pedge eTmp = edgeId;
+            edgeId = edgeId->next;
+            free(eTmp);
         }
-        prev->next = curr->next;
-        del_in_out_edges(temp, id);
-        free(curr);
-        curr = NULL;
+        pnode nTmp = nodeId;
+        nodeId = nodeId->next;
+        free(nTmp);
     }
+    *head = NULL;
 }
-// func that del all the edges that connected to the current node
 
-void del_in_out_edges(pnode head, int id)
-{
-    while (head != NULL)
-    {
-        pedge curr = head->edges;
-        pedge prev = head->edges;
+void delete_node_cmd(pnode *head){
+    int del = -1;
+    scanf("%d", &del);
+    pnode curr = *head;
+    pnode that = getNode(head,del);
 
-        if (head->node_num == id)
-        {
-            del_edges(head->edges); // del all the out edges
+    if(del == curr->node_num) {
+        pedge edgeId = that->edges;
+        while (edgeId != NULL){
+            pedge tmp = edgeId->next;
+
         }
-        while (curr->endpoint != id)
-        {
-            prev = curr;
-            curr = curr->endpoint;
-        }
-        prev->next = curr->next;
-        free(curr);
-        curr = NULL;
 
-        head = head->next;
     }
+
+
 }
