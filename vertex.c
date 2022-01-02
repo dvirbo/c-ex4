@@ -30,7 +30,7 @@ void Node_free(pvertex node) {
     p2 = NULL;
 }
 
-pvertex  add_node(int data, pvertex next) {
+pvertex add_node(int data, pvertex next) {
     pvertex p = (pvertex) malloc(sizeof(vertex));
     p->id = data;
     p->tag = 0;
@@ -51,15 +51,16 @@ void add_edge(int src, int dest, int w, pvertex v) {
     *p = edge_alloc(src, dest, w,NULL);
 }
 
-pvertex get_node(int id, pvertex head, int number_of_nodes){
-    pvertex *p = &head;
-    while(((*p)->id) != id){
-        p = &((*p)->next);
+pvertex get_node(int id, pvertex *head){
+    pvertex p = *head;
+    while (p != NULL){
+        if(p->id == id){
+            return p;
+
+        }
+        p = p->next;
     }
-    if(((*p)->id) == number_of_nodes-1){
-        return NULL;
-    }
-    return *p;
+    return  NULL;
 }
 
 void del_in_edges(pvertex head, int id){
