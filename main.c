@@ -11,10 +11,13 @@ int main() {
             insert_node_cmd(head);
         } else if (func == 'D') {
             delete_node_cmd(head);
-//        } else if (func == 'S') {
-//            shortsPath_cmd(*head);
-//        }
+        } else if (func == 'S') {
+            int src = -1, dest  =-1;
+            scanf("%d %d", &src, &dest);
+            int distance = shortsPath_cmd(*head, src, dest);
+            printf("Dijsktra shortest path: %d \n", distance);
         }
+
     }
     deleteGraph_cmd(head);
     return 0;

@@ -100,64 +100,67 @@ void deleteGraph_cmd(pnode *head) {
 }
 
 void delete_node_cmd(pnode *head) {
-    int key = -1;
-    // define the needed variables:
-    pnode nextNode = NULL;
-    pnode currNode = NULL;
-    pnode delNode = NULL;
+    int del = -1;
+    int first;
+    scanf("%d", &del);
+    pnode currNode = *head;
+    pnode that = getNode(head, del); // the node that need to free
     pedge currEdge = NULL;
-    pedge nextEdge = NULL;
+    pedge prevEdge = NULL;
+    //first,delete the in edges:
+    while (currNode != NULL &&currNode != that) {
+        first = 1;
+        currEdge = currNode->edges;
+        prevEdge = currNode->edges;
 
-    scanf("%d", &key);
-    delNode = getNode(head, key);
-    // delete the node:
-    if((*head) == delNode){ //head  == node to delete
-        nextNode = (*head)->next;
-        *head = nextNode;
-    }
-    else {
-        currNode = *head;
-        nextNode = currNode->next;
-        while (nextNode != NULL) {
-            if (nextNode == delNode) {
-                nextNode = nextNode->next;
-            }
-            currNode = nextNode;
-        }
-    }
-    currNode = *head; //reset the curr
-    // in & out edges:
-    while(currNode != NULL) {
-        if (currNode->edges != NULL) { // the del node have out edges:
-            currEdge = currNode->edges;
-            if (currEdge->endpoint == delNode) { //in edges:
-                nextEdge = currEdge->next;
-                free(currEdge);
-                currEdge = nextEdge;
-            }
-            else {
-                currEdge = currNode->edges;
-                while (currEdge->next != NULL) {
-                    nextEdge = currEdge->next;
-                    if (nextEdge->endpoint == delNode) {
-                        nextEdge = nextEdge->next;
-                        free(nextEdge);
-                        currEdge = nextEdge;
-                        break;
-                    }
-                    currEdge = currEdge->next;
+        while (currEdge != NULL) { // iterate all the edges that their end point is equal to the node that we delete
+            if (currEdge->endpoint->node_num != that->node_num ) {
+                if(currEdge->next == NULL){
+                    break;
                 }
+                first = 0;
+                prevEdge = currEdge;
+
+                currEdge = currEdge->next;
+
+            } else if (currEdge->endpoint->node_num == that->node_num && first == 1) {
+                currEdge = currEdge->next;
+                free(prevEdge);
+                  prevEdge = NULL;
+                 first = 0;
+            } else{
+                prevEdge->next = currEdge->next;
+                free(currEdge);
+                currEdge = prevEdge->next;
+
             }
+
         }
         currNode = currNode->next;
     }
+    // delete out edges from the node:
+    pedge delThat = that->edges;
 
-    currEdge = delNode->edges;
-    nextEdge = NULL;
-    while (currEdge != NULL) {
-        nextEdge = currEdge->next;
+    while (delThat != NULL) {
+        currEdge = delThat;
+        delThat = delThat->next;
         free(currEdge);
-        currEdge = nextEdge;
+        currEdge = NULL;
     }
-    free(delNode);
+    currNode = *head;
+    pnode prevNode = *head;
+    if((*head) == that){
+        *head = currNode->next;
+        free(prevNode);
+        prevNode = NULL;
+    } else {
+        while (currNode->node_num != that->node_num) {
+            prevNode = currNode;
+            currNode = currNode->next;
+        }
+        prevNode->next = that->next;
+        free(that);
+        that = NULL;
+    }
+
 }
