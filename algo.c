@@ -2,9 +2,8 @@
 #include <stdlib.h>
 #include "graph.h"
 
-int weight = inf;
-int size = -1;
-int j;
+int weight;
+int size;
 pnode graph;
 
 pDInode nodeList(pnode first, int src)
@@ -176,12 +175,16 @@ void allPaths(int first, int *arr){
 
 int TSP_cmd(pnode head){
     graph = head;
+    size = -1;
+    weight = inf;
     scanf("%d", &size);
     int *list = createList();
     int *copy = copyList(list);
-    allPaths(0, list);
+    allPaths(0, copy);
     if(weight == inf){
         weight = -1;
     }
+    free(list);
+    free(copy);
     return  weight;
 }
