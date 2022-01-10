@@ -178,7 +178,7 @@ int TSP_cmd(pnode head){
     graph = head;
     scanf("%d", &size);
     int *list = createList();
-    // int *copy = copyList(list);
+    int *copy = copyList(list);
     allPaths(0, list);
     if(weight == inf){
         weight = -1;
