@@ -32,6 +32,6 @@ void insert_node_cmd(pnode *head);
 void delete_node_cmd(pnode *head);
 void deleteGraph_cmd(pnode *head);
 int shortsPath_cmd(pnode head, int src, int dest);
-void TSP_cmd(pnode head);
+int TSP_cmd(pnode head);
 
 #endif

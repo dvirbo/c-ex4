@@ -33,6 +33,20 @@ pDInode nodeList(pnode first, int src)
     }
     return head;
 }
+
+pDInode getpDInode(pDInode list, int id)
+{
+    while (list != NULL)
+    {
+        if (list->node->node_num == id)
+        {
+            return list;
+        }
+        list = list->next;
+    }
+    return NULL;
+}
+
 pDInode minInList(pDInode head)
 {
     pDInode min = NULL;
@@ -49,19 +63,6 @@ pDInode minInList(pDInode head)
         min->tag = 1; //visit
     }
     return min;
-}
-
-pDInode getpDInode(pDInode list, int id)
-{
-    while (list != NULL)
-    {
-        if (list->node->node_num == id)
-        {
-            return list;
-        }
-        list = list->next;
-    }
-    return NULL;
 }
 
 int shortsPath_cmd(pnode head, int src, int dest)
@@ -92,11 +93,16 @@ int shortsPath_cmd(pnode head, int src, int dest)
         dis  = -1;
     }
 
-    while (list != NULL)
+    while (list != NULL)  // iter all the list and free
     {
         pDInode temp = list;
         list = list->next;
         free(temp);
     }
     return dis;
+}
+
+int TSP_cmd(pnode head){
+
+    
 }

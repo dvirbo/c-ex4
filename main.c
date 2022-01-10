@@ -17,6 +17,9 @@ int main() {
             int distance = shortsPath_cmd(*head, src, dest);
             printf("Dijsktra shortest path: %d \n", distance);
         }
+        else if (input == 'T') {
+        int weight = TSP_cmd(*head);
+        printf("TSP shortest path: %d \n", weight);
 
     }
     deleteGraph_cmd(head);
